@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="SIMS">
+    <meta name="author" content="DWR">
+
+    <title>SIMS Viewer</title>
+
+    <!-- Load spinner first for loading screen -->
+    <script src="assets/js/plugins/spin.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap-slider.css" rel="stylesheet" >
+
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="assets/vendor/leaflet/css/leaflet.css" >
+
+    <!-- Vendor styles -->
+    <link href="assets/css/fa-svg-with-js.css" rel="stylesheet">
+    <link href="assets/css/mapskin.min.css" rel="stylesheet">
+    <link href="assets/css/animate.css" rel="stylesheet">
+    <link href="assets/css/iconLayers.css" rel="stylesheet">
+    <link href="assets/css/leaflet.zoomhome.css" rel="stylesheet">
+    <link href="assets/css/esri-leaflet-geocoder.css" rel="stylesheet">
+    <link href="assets/css/leaflet-slider.css" rel="stylesheet">
+
+    <!-- Progress Bars -->
+    <script src="assets/js/plugins/pace.min.js"></script>
+    <link href="assets/css/pace.css" rel="stylesheet">
+
+    <!-- App Styles -->
+    <link href="assets/css/map.css" rel="stylesheet">
+
+    <!-- jQuery core JavaScript -->
+    <script src="assets/vendor/jquery/jquery.js"></script>
+    <script src="assets/vendor/jquery/jquery-ui.min.js"></script>
+    <script src="assets/vendor/jquery/jquery-ajax-blob-arraybuffer.js"></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="assets/vendor/bootstrap/js/popper.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap-list-filter.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap-slider.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap-notify.js"></script>
+
+    <!-- Font Awesome 5 Icons -->
+    <script src="assets/js/plugins/fontawesome-all.min.js"></script>
+    
+    <!-- IE 11 Promise support -->
+    <script src="assets/js/plugins/bluebird.min.js"></script>
+    
+    <!-- IE Polyfill -->
+    <script type="text/javascript">
+    if (typeof Object.assign != 'function') {
+      Object.assign = function(target) {
+        'use strict';
+        if (target == null) {
+          throw new TypeError('Cannot convert undefined or null to object');
+        }
+        target = Object(target);
+        for (var index = 1; index < arguments.length; index++) {
+          var source = arguments[index];
+          if (source != null) {
+            for (var key in source) {
+              if (Object.prototype.hasOwnProperty.call(source, key)) {
+                target[key] = source[key];
+              }
+            }
+          }
+        }
+        return target;
+      };
+    }
+    if (!String.prototype.includes) {
+      String.prototype.includes = function(search, start) {
+        'use strict';
+        if (typeof start !== 'number') {
+          start = 0;
+        }
+
+        if (start + search.length > this.length) {
+          return false;
+        } else {
+          return this.indexOf(search, start) !== -1;
+        }
+      };
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- Loading Mask -->
+    <div id="loading-mask" class="modal-backdrop loading">
+      <div id="logo"><img src="assets/css/images/dwr_large.png">
+        <script>
+          var spinner = new Spinner().spin();
+          document.getElementById('logo').appendChild(spinner.el);
+        </script>
+      </div>
+      <div class="loading-indicator">
+      </div>
+    </div>
+
+
+    <!-- Nav bar -->
+    <div id="navTitle" class="container">
+      <nav class="navbar navbar-expand navbar-dark">
+          <img id="DWRLogo" src="assets/css/images/dwr.png"><span id="AppTitle">SIMS Viewer<br><span id="AppSubTitle">CA Department of Water Resources</span></span>
+      </nav>
+      <nav class="navbar navbar-expand navbar-dark navTools">
+        <ul class="navbar-nav navToolList">
+          <li class="nav-item">
+            <a id="identity-btn" class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="SIMS Query"><i class="fas fa-lg fa-inverse fa-map-marker-alt"></i></a>
+          </li>
+          <li class="nav-item">
+            <a id="layers-btn" class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Layers" ><i class='fas fa-lg fa-inverse fa-list-alt'></i></a>
+          </li>
+          <li class="nav-item">
+            <a id="basemap-btn" class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Basemaps" ><i class='fas fa-lg fa-inverse fa-th-large'></i></a>
+          </li>
+          <li class="nav-item">
+            <a id="download-btn" class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Download Data"><i class="fas fa-cloud-download-alt fa-inverse fa-lg"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link docsShow" href="#" data-toggle="tooltip" data-placement="bottom" title="Information"><i class='fas fa-lg fa-inverse fa-info-circle'></i></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+
+
+    <!-- Map -->
+    <div id="map" class="sidebar-map"></div>
+
+
+
+    <!-- Leaflet JavaScript -->
+    <script src="assets/vendor/leaflet/js/leaflet.js"></script>
+
+    <!-- Vendor dependency scripts -->
+    <script src="assets/js/plugins/iconLayers.js"></script>
+    <script src="assets/js/plugins/esri-leaflet.js"></script>
+    <script src="assets/js/plugins/esri-leaflet-vector.js"></script>
+    <script src="assets/js/plugins/esri-leaflet-geocoder.js"></script>
+    <script src="assets/js/plugins/leaflet.zoomhome.min.js"></script>
+    <script src="assets/js/plugins/leaflet-slider.js"></script>
+    <script src="assets/js/plugins/papaparse.js"></script>
+    <script src="assets/js/plugins/leaflet.ajax.js"></script>
+    <script src="assets/js/plugins/proj4-src.js"></script>
+
+    <!-- Application scripts -->
+    <script src="config.js"></script>
+    <script src="assets/js/popup.js"></script>
+    <script src="assets/js/app.js"></script>
+
+    <script type="text/javascript">
+
+    // Dates
+
+
+
+
+    // Tooltips
+
+        $(function () {
+
+              $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
+                  if ($(this).hasClass("disabled")) {
+                    e.preventDefault();
+                    return false;
+                  }
+                });
+
+        });
+
+
+
+
+    // Notifications
+        function notifyDanger(alert) {
+            $.notify({message: alert},{
+                type: 'danger',
+                placement: {from: "bottom",align: "right"},
+                z_index: 1000,
+                animate: {enter: 'animated fadeInDown',exit: 'animated fadeOutUp'},
+                delay: 10000
+            });
+        }
+
+        function notifyInfo(alert) {
+            $.notify({message: alert},{
+                type: 'warning',
+                placement: {from: "bottom", align: "right"},
+                z_index: 1000,
+                animate: {enter: 'animated fadeInDown',exit: 'animated fadeOutUp'},
+                delay: 10000
+            });
+        }
+
+
+    // Broswer check
+    navigator.sayswho= (function(){
+        var ua= navigator.userAgent, tem,
+        M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+        if(/trident/i.test(M[1])){
+            tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+            return 'IE '+(tem[1] || '');
+        }
+        if(M[1]=== 'Chrome'){
+            tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+            if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+        }
+        M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+        if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+        return M.join(' ');
+    })();
+
+    
+        
+
+    </script>
+
+
+
+
+</body>
+
+</html>
