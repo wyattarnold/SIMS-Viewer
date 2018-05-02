@@ -5113,7 +5113,6 @@ var Layers = Control.extend({
 			layer = this._getLayer(input.layerId).layer;
 			input.disabled = (layer.options.minZoom !== undefined && zoom < layer.options.minZoom) ||
 			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
-			console.log(input.disabled)
 
 		}
 	},

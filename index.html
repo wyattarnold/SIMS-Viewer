@@ -23,7 +23,7 @@
     <meta name="description" content="SIMS">
     <meta name="author" content="DWR">
 
-    <title>SIMS Viewer</title>
+    <title>SIMS Viewer (FOR TESTING)</title>
 
     <!-- Load spinner first for loading screen -->
     <script src="assets/js/plugins/spin.min.js"></script>
@@ -127,7 +127,7 @@
     <!-- Nav bar -->
     <div id="navTitle" class="container">
       <nav class="navbar navbar-expand navbar-dark">
-          <img id="DWRLogo" src="assets/css/images/dwr.png"><span id="AppTitle">SIMS Viewer<br><span id="AppSubTitle">CA Department of Water Resources</span></span>
+          <img id="DWRLogo" src="assets/css/images/dwr.png"><span id="AppTitle">SIMS Viewer (FOR TESTING ONLY)<br><span id="AppSubTitle">CA Department of Water Resources</span></span>
       </nav>
       <nav class="navbar navbar-expand navbar-dark navTools">
         <ul class="navbar-nav navToolList">
@@ -140,21 +140,13 @@
           <li class="nav-item">
             <a id="basemap-btn" class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Basemaps" ><i class='fas fa-lg fa-inverse fa-th-large'></i></a>
           </li>
-          <li class="nav-item">
-            <a id="download-btn" class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Download Data"><i class="fas fa-cloud-download-alt fa-inverse fa-lg"></i></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link docsShow" href="#" data-toggle="tooltip" data-placement="bottom" title="Information"><i class='fas fa-lg fa-inverse fa-info-circle'></i></a>
-          </li>
         </ul>
       </nav>
     </div>
 
 
-
     <!-- Map -->
     <div id="map" class="sidebar-map"></div>
-
 
 
     <!-- Leaflet JavaScript -->
@@ -170,56 +162,46 @@
     <script src="assets/js/plugins/papaparse.js"></script>
     <script src="assets/js/plugins/leaflet.ajax.js"></script>
     <script src="assets/js/plugins/proj4-src.js"></script>
+    <script src="assets/js/plugins/highcharts.js"></script>
+    <script src="assets/js/plugins/highcharts-exporting.js"></script>
+    <script src="assets/js/plugins/highcharts-export-data.js"></script>
+
 
     <!-- Application scripts -->
     <script src="config.js"></script>
     <script src="assets/js/popup.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/interactions.js"></script>
 
     <script type="text/javascript">
 
-    // Dates
-
-
-
-
     // Tooltips
-
-        $(function () {
-
-              $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
-                  if ($(this).hasClass("disabled")) {
-                    e.preventDefault();
-                    return false;
-                  }
-                });
-
-        });
-
-
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger : 'hover'
+          });
+    });
 
     // Notifications
-        function notifyDanger(alert) {
-            $.notify({message: alert},{
-                type: 'danger',
-                placement: {from: "bottom",align: "right"},
-                z_index: 1000,
-                animate: {enter: 'animated fadeInDown',exit: 'animated fadeOutUp'},
-                delay: 10000
-            });
-        }
+    function notifyDanger(alert) {
+        $.notify({message: alert},{
+            type: 'danger',
+            placement: {from: "bottom",align: "right"},
+            z_index: 1000,
+            animate: {enter: 'animated fadeInDown',exit: 'animated fadeOutUp'},
+            delay: 10000
+        });
+    }
 
-        function notifyInfo(alert) {
-            $.notify({message: alert},{
-                type: 'warning',
-                placement: {from: "bottom", align: "right"},
-                z_index: 1000,
-                animate: {enter: 'animated fadeInDown',exit: 'animated fadeOutUp'},
-                delay: 10000
-            });
-        }
-
+    function notifyInfo(alert) {
+        $.notify({message: alert},{
+            type: 'warning',
+            placement: {from: "bottom", align: "right"},
+            z_index: 1000,
+            animate: {enter: 'animated fadeInDown',exit: 'animated fadeOutUp'},
+            delay: 10000
+        });
+    }
 
     // Broswer check
     navigator.sayswho= (function(){

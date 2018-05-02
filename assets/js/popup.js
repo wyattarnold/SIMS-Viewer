@@ -15,6 +15,7 @@ L.Control.PopupInfo = L.Control.extend({
     
     this.popupBox = L.DomUtil.create('div', 'popupBox', container)
     this.popupBox.id = 'popupBox'
+    this.popupBox.innerHTML = 'Click the map to query time series ET information'
 
     L.DomEvent.disableClickPropagation(this.popupBox);
     L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
